@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <title>StaticPopup Demo</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css" />
+  <link rel="stylesheet" href="L.StaticPopup.css" />
+  <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet-src.js"></script>
+  <script src="L.StaticPopup.js"></script>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+    html, body, #map {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="ui-container">
+	  <div> Some Header </div>
+      <div id="staticPopup" class="leaflet-popup-content">
+      </div>
+  </div>
+  <script>
+	  var attr_osm = 'Map data &copy; <a href="http://openstreetmap.org/">OpenStreetMap</a> contributors';
+    var osm = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {opacity: 0.7, attribution: attr_osm});
+
+    var map = new L.Map('map').addLayer(osm).setView(new L.LatLng(52.265, 10.524), 14);
+
+	var circle = L.circle([52.265, 10.524], 500, {
+		color: 'red',
+		fillColor: '#f03',
+		fillOpacity: 0.5
+	}).addTo(map);
+
+	circle.bindPopup("Circle with static popup.");
+	circle.addTo(map);
+
+	var marker = L.marker([52.267, 10.524]).addTo(map);
+	marker.bindPopup("Marker with dinamic popup.");
+
+	var fg_marker1 = L.marker([52.267, 10.500]).addTo(map);
+	fg_marker1.bindPopup("FeatureGroup Marker1 with static popup.");
+	var fg_marker2 = L.marker([52.263, 10.500]).addTo(map);
+	fg_marker2.bindPopup("FeatureGroup Marker2 with static popup.");
+
+	var fg = L.featureGroup();
+	fg.addTo(map);
+
+	fg.addLayer(fg_marker1);
+	fg.addLayer(fg_marker2);
+
+
+	// show popups in a div with id=staticPopup
+	var staticPop = new L.StaticPopup({id:"staticPopup"});
+    staticPop.addTo(map);
+    staticPop.applyTo(circle);
+    staticPop.applyTo(fg);
+  </script>
+
+</body>
+</html>
+
